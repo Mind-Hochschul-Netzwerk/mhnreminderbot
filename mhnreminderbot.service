@@ -1,0 +1,13 @@
+[Unit]
+Description=Tg Bot MHN Telko Reminder
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory={{ Path to application }}
+ExecStart={{ Path to application }}.venv/bin/python -m package.main
+RestartSec=3
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
