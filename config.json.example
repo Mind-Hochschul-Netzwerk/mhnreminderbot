@@ -1,0 +1,11 @@
+{
+  "all": {
+    "logging": {
+      "file": "mylog.log"
+    },
+    "tg": {
+      "token": "XXXXXXXX",
+      "chat_ids": [XXXXXX]
+    }
+  }
+}
