@@ -45,24 +45,33 @@ def start(update, context):
     except Exception as exception:
         raise exception
 
+# Commands
+def help(update, context):
+    try:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Ich schicke generell Donnerstags um 16 Uhr und im spziellen Fall das es der erste Donnerstag des Monats ist auch um 20 Uhr einen Reminder an die Telko.")
+    except Exception as exception:
+        raise exception
+
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
+help_handler = CommandHandler('help', help)
+dispatcher.add_handler(help_handler)
 
 # Every Day Job
 def reminder():
     """Check for new comics and send them afterwards"""
     try:
         for i in config.tg_config['chat_ids']:
-            if datetime.datetime.today().day > 8:
+            if datetime.datetime.today().day < 8:
                 updater.bot.send_message(chat_id=i, text="Heute ist Telko um 20:00 Uhr. Wie immer im Discord vom MHN.")
                 log_string = "Done sending to " + str(i)
                 logging.debug(log_string)
-            elif datetime.datetime.today().day > 8 and datetime.datetime.today().hour < 19:
+            elif datetime.datetime.today().day < 8 and datetime.datetime.today().hour < 19:
                 updater.bot.send_message(chat_id=i, text="Heute ist Telko um 20:00 Uhr. Wie immer im Discord vom MHN.")
                 log_string = "Done sending to " + str(i)
                 logging.debug(log_string)
-            elif datetime.datetime.today().day < 7:
+            elif datetime.datetime.today().day > 7:
                 updater.bot.send_message(chat_id=i, text="Vergesst nicht an jedem ersten Donnerstag im Monat findet die IT team Telko auf dem MHN Discordserver um 20:00 Uhr statt.")
                 log_string = "Done sending to " + str(i)
                 logging.debug(log_string)
