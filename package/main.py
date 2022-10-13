@@ -4,8 +4,9 @@ import logging
 import schedule
 import datetime 
 import time
+from telegram import Update
 from telegram.ext import Updater
-from telegram.ext import CommandHandler
+from telegram.ext import CommandHandler, CallbackContext, MessageHandler, Filters
 import logging
 from . import config
 
@@ -39,24 +40,31 @@ updater = Updater(token=config.tg_config['token'], use_context=True)
 dispatcher = updater.dispatcher
 
 # Commands
-def start(update, context):
+def start(update: Update, context: CallbackContext):
     try:
         context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, I am the Bot that reminds the IT Team of its regular Telco.")
     except Exception as exception:
         raise exception
 
 # Commands
-def help(update, context):
+def help(update: Update, context: CallbackContext):
     try:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Ich schicke generell Donnerstags um 16 Uhr und im spziellen Fall das es der erste Donnerstag des Monats ist auch um 20 Uhr einen Reminder an die Telko.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Ich schicke generell Donnerstags um 16 Uhr und im spziellen Fall das es der erste Donnerstag des Monats ist auch um 20 Uhr einen Reminder an die IT Team Telko.")
     except Exception as exception:
         raise exception
+
+def unknown(update: Update, context: CallbackContext):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+
 
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
 help_handler = CommandHandler('help', help)
 dispatcher.add_handler(help_handler)
+
+unknown_handler = MessageHandler(Filters.command, unknown)
+dispatcher.add_handler(unknown_handler)
 
 # Every Day Job
 def reminder():
